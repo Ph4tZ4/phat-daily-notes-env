@@ -1,6 +1,7 @@
 services:
   backend:
     image: korarak777/flask-backend:latest
+    restart : unless-stopped
     container_name: flask-backend
     env_file:
       - ./backend/.env
@@ -12,6 +13,7 @@ services:
   frontend:
     image: korarak777/nuxt-frontend:latest
     container_name: nuxt-frontend
+    restart : unless-stopped
     env_file:
       - ./frontend/.env
     ports:
