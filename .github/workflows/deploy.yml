@@ -1,37 +1,53 @@
-name: CI/CD for Backend & Frontend
+name: Build and Deploy to Docker Server
 
 on:
   push:
     branches:
-      - main  # หรือเปลี่ยนเป็น branch ที่คุณใช้
+      - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout source code
-        uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: 🔐 Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-      # ---------- Backend ----------
-      - name: 🐍 Build Backend image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-backend:latest ./backend
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: 📤 Push Backend image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/flask-backend:latest
+    - name: Build & Push Backend Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        push: true
+        tags: korarak777/flask-backend:latest
 
-      - name: 🚀 Trigger Portainer backend webhook
-        run: curl -X GET "${{ secrets.PORTAINER_WEBHOOK_URL }}"
+    - name: Build & Push Frontend Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        file: ./frontend/Dockerfile
+        push: true
+        tags: korarak777/nuxt-frontend:latest
 
-      # ---------- Frontend ----------
-      - name: 🧱 Build Frontend image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nuxt-frontend:latest ./frontend
-
-      - name: 📤 Push Frontend image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/nuxt-frontend:latest
-
-      - name: 🚀 Trigger Portainer frontend webhook
-        run: curl -X GET "${{ secrets.PORTAINER_WEBHOOK_URL }}"
+    - name: Deploy to Server via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        port: ${{ secrets.SERVER_PORT }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ~/ex1-daily-notes
+          docker pull korarak777/flask-backend:latest
+          docker pull korarak777/nuxt-frontend:latest
+          docker compose down
+          docker compose up -d
