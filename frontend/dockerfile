@@ -2,9 +2,6 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy .env FIRST (เพื่อให้ build ใช้ได้)
-COPY .env .env
-
 # Copy package + install
 COPY package*.json ./
 RUN npm install
