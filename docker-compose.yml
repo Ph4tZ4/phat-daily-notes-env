@@ -14,15 +14,16 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}   # << ดึงจาก .env ภายนอก
     container_name: nuxt-frontend
     env_file:
-      - ./frontend/.env
+      - ./frontend/.env                # ใช้ตอน runtime
     ports:
       - "3001:3000"
     restart: unless-stopped
     networks:
       - app-network
-
 
 networks:
   app-network:

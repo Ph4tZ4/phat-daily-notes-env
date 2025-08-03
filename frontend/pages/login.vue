@@ -1,8 +1,13 @@
 <template>
   <div class="flex justify-center items-center min-h-screen bg-gray-100">
     <div class="bg-white p-6 rounded shadow w-80">
-      <h1 class="text-xl font-bold mb-4 text-center">Login</h1>
-      
+      <h1 class="text-xl font-bold mb-2 text-center">Login</h1>
+
+      <!-- Show API URL -->
+      <p class="text-sm text-gray-500 text-center mb-2">
+        API URL: {{ apiUrl }}
+      </p>
+
       <input
         v-model="username"
         placeholder="Username"
@@ -38,12 +43,13 @@ import { useRouter } from 'vue-router'
 const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
+const apiUrl = import.meta.env.VITE_API_URL
 const router = useRouter()
 
 const handleLogin = async () => {
   errorMsg.value = ''
   try {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, {
+    const res = await axios.post(`${apiUrl}/api/login`, {
       username: username.value,
       password: password.value
     })
