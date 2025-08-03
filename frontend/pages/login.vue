@@ -53,8 +53,8 @@ const handleLogin = async () => {
       username: username.value,
       password: password.value
     })
-
     localStorage.setItem('token', res.data.access_token)
+    console.log('Token:', res.data.access_token)
     router.push('/dashboard')
   } catch (err) {
     errorMsg.value =
