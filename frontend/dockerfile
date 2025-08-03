@@ -2,17 +2,21 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy .env FIRST (เพื่อให้ build ใช้ได้)
-COPY .env .env
+# Build-time environment variable
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
-# Copy package + install
+# สร้างไฟล์ .env โดยใช้ ARG
+RUN echo "VITE_API_URL=$VITE_API_URL" > .env
+
+# ติดตั้ง dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy all files
+# คัดลอกไฟล์โปรเจกต์
 COPY . .
 
-# Build using .env values
+# Build Nuxt project (จะอ่านค่า .env ที่เราสร้าง)
 RUN npm run build
 
 EXPOSE 3000

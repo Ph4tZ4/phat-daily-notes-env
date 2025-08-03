@@ -37,6 +37,8 @@ jobs:
         file: ./frontend/Dockerfile
         push: true
         tags: korarak777/nuxt-frontend:latest
+        build-args: |
+          VITE_API_URL=${{ secrets.VITE_API_URL }}
 
     - name: Deploy to Server via SSH
       uses: appleboy/ssh-action@master
