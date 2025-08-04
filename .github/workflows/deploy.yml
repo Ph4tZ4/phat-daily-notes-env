@@ -28,7 +28,7 @@ jobs:
         context: ./backend
         file: ./backend/Dockerfile
         push: true
-        tags: korarak777/flask-backend:latest
+        tags: phacphat/flask-backend:latest
 
     - name: Build & Push Frontend Image
       uses: docker/build-push-action@v5
@@ -36,7 +36,7 @@ jobs:
         context: ./frontend
         file: ./frontend/Dockerfile
         push: true
-        tags: korarak777/nuxt-frontend:latest
+        tags: phacphat/nuxt-frontend:latest
         build-args: |
           VITE_API_URL=${{ secrets.VITE_API_URL }}
 
@@ -48,8 +48,8 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd ~/ex10-daily-notes
-          docker pull korarak777/flask-backend:latest
-          docker pull korarak777/nuxt-frontend:latest
+          cd ~/phat-daily-notes-env
+          docker pull phacphat/flask-backend:latest
+          docker pull phacphat/nuxt-frontend:latest
           docker compose down
           docker compose up -d
