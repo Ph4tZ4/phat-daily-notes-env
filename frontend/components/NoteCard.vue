@@ -1,10 +1,14 @@
 <template>
-  <div class="bg-white p-4 shadow rounded mb-3">
-    <h2 class="font-bold">{{ note.title }}</h2>
-    <p class="text-sm text-gray-600">{{ note.content }}</p>
-    <p class="text-xs text-right">{{ note.created_at }}</p>
-    <button @click="$emit('delete', note.id)" class="text-red-500 text-sm mt-2">Delete</button>
-  </div>
+  <article class="card mb-4">
+    <header class="flex items-baseline justify-between mb-2">
+      <h2 class="font-semibold text-pink-300 text-lg">{{ note.title }}</h2>
+      <time class="text-xs text-pink-400/70">{{ note.created_at }}</time>
+    </header>
+    <p class="text-sm text-pink-100/90 whitespace-pre-line">{{ note.content }}</p>
+    <div class="mt-3 flex justify-end">
+      <button @click="$emit('delete', note.id)" class="btn-outline text-sm">Delete</button>
+    </div>
+  </article>
 </template>
 
 <script setup>

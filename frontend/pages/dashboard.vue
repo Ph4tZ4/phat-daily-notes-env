@@ -1,19 +1,29 @@
 <template>
-  <div class="p-6 max-w-3xl mx-auto">
-    <h1 class="text-2xl font-bold mb-4">My Notes</h1>
-
-    <div class="flex gap-2 mb-4">
-      <input v-model="title" placeholder="Title" class="border p-2 w-1/3" />
-      <input v-model="content" placeholder="Content" class="border p-2 flex-1" />
-      <button @click="createNote" class="bg-green-500 text-white p-2">Add</button>
+  <div>
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-pink-300">My Notes</h1>
+      <p class="text-sm text-pink-200/70">Your private weblog entries</p>
     </div>
 
-    <NoteCard
-      v-for="note in notes"
-      :key="note.id"
-      :note="note"
-      @delete="deleteNote"
-    />
+    <div class="card mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+        <input v-model="title" placeholder="Title" class="input md:col-span-2" />
+        <input v-model="content" placeholder="Write a quick note..." class="input md:col-span-3" />
+      </div>
+      <div class="mt-3 flex justify-end">
+        <button @click="createNote" class="btn-primary">Publish</button>
+      </div>
+    </div>
+
+    <div>
+      <NoteCard
+        v-for="note in notes"
+        :key="note.id"
+        :note="note"
+        @delete="deleteNote"
+      />
+      <p v-if="notes.length === 0" class="text-pink-200/60 text-sm">No notes yet. Start your first post above.</p>
+    </div>
   </div>
 </template>
 

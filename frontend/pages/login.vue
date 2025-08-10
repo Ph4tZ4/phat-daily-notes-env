@@ -1,35 +1,23 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="bg-white p-6 rounded shadow w-80">
-      <h1 class="text-xl font-bold mb-2 text-center">Login</h1>
+  <div class="flex justify-center items-center min-h-[70vh]">
+    <div class="card w-full max-w-sm">
+      <h1 class="text-2xl font-bold text-center text-pink-300">Login</h1>
+      <p class="text-xs text-center text-pink-200/60 mt-1">API: {{ apiUrl }}</p>
 
-      <!-- Show API URL -->
-      <p class="text-sm text-gray-500 text-center mb-2">
-        API URL: {{ apiUrl }}
+      <div class="mt-4 space-y-3">
+        <input v-model="username" placeholder="Username" class="input" />
+        <input v-model="password" type="password" placeholder="Password" class="input" />
+      </div>
+
+      <button @click="handleLogin" class="btn-primary w-full mt-4">Login</button>
+
+      <p v-if="errorMsg" class="text-red-400 text-sm mt-3 text-center">
+        {{ errorMsg }}
       </p>
 
-      <input
-        v-model="username"
-        placeholder="Username"
-        class="mb-3 p-2 border w-full rounded"
-      />
-
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        class="mb-4 p-2 border w-full rounded"
-      />
-
-      <button
-        @click="handleLogin"
-        class="bg-blue-500 text-white p-2 w-full rounded hover:bg-blue-600"
-      >
-        Login
-      </button>
-
-      <p v-if="errorMsg" class="text-red-500 text-sm mt-3 text-center">
-        {{ errorMsg }}
+      <p class="text-xs text-center mt-4 text-pink-200/70">
+        New here?
+        <NuxtLink class="underline hover:text-pink-200" to="/register">Create an account</NuxtLink>
       </p>
     </div>
   </div>
